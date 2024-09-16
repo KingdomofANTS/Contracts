@@ -106,17 +106,7 @@ contract ANTShop is ERC1155, ERC1155Holder, IANTShop, Ownable, Pausable {
     function balanceOf(address account, uint256 id) public view override(ERC1155, IANTShop) returns(uint256) {
       return super.balanceOf(account, id);
     }
-
-    // /**
-    // * @dev See {IERC1155-isApprovedForAll}.
-    // */
-    // function isApprovedForAll(address account, address operator) public view virtual override returns (bool) {
-    //     if(minters[account] || minters[operator]){
-    //       return true;
-    //     }
-    //     return super.isApprovedForAll(account, operator);
-    // }
-
+ 
     /**
     * @notice Override `safeTransferFrom` function of ERC1155
     */

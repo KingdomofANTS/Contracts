@@ -315,7 +315,7 @@ contract Workforce is Ownable, Pausable, ReentrancyGuard {
     * @param _antCAmount ant coin stake amount
     */
 
-    function stakePremiumANT(uint256 _tokenId, uint256 _antCAmount) external whenNotPaused {
+    function stakePremiumANT(uint256 _tokenId, uint256 _antCAmount) external whenNotPaused nonReentrant {
         require(premiumANT.ownerOf(_tokenId) == _msgSender(), 'Workforce: you are not owner of this token');
         require(_antCAmount > 0, "Workforce: ant coin stake amount should be > 0");
         require(_antCAmount <= limitAntCoinStakeAmount, "Workforce: ant coin stake amount exceed the limit amount");
@@ -342,7 +342,7 @@ contract Workforce is Ownable, Pausable, ReentrancyGuard {
     * @param _antCAmount ant coin stake amount
     */
 
-    function stakeBasicANT(uint256 _tokenId, uint256 _antCAmount) external whenNotPaused {
+    function stakeBasicANT(uint256 _tokenId, uint256 _antCAmount) external whenNotPaused nonReentrant {
         require(basicANT.ownerOf(_tokenId) == _msgSender(), 'Workforce: you are not owner of this token');
         require(_antCAmount > 0, "Workforce: ant coin stake amount should be > 0");
         require(_antCAmount <= limitAntCoinStakeAmount, "Workforce: ant coin stake amount exceed the limit amount");
@@ -368,7 +368,7 @@ contract Workforce is Ownable, Pausable, ReentrancyGuard {
     * @param _tokenId Premium ant token id for unstake
     */
 
-    function unStakePremiumANT(uint256 _tokenId) external whenNotPaused {
+    function unStakePremiumANT(uint256 _tokenId) external whenNotPaused nonReentrant {
         StakeANT memory _stakeANTInfo = premiumANTWorkforce[_tokenId];
         require(_stakeANTInfo.owner == _msgSender(), 'Workforce: you are not owner of this premium ant');
         uint256 rewardAmount = pendingRewardOfPremiumToken(_tokenId);
@@ -391,7 +391,7 @@ contract Workforce is Ownable, Pausable, ReentrancyGuard {
     * @param _tokenId Basic ant token id for unstake
     */
 
-    function unStakeBasicANT(uint256 _tokenId) external whenNotPaused {
+    function unStakeBasicANT(uint256 _tokenId) external whenNotPaused nonReentrant {
         StakeANT memory _stakeANTInfo = basicANTWorkforce[_tokenId];
         require(_stakeANTInfo.owner == _msgSender(), 'Workforce: you are not owner of this basic ant');
         uint256 rewardAmount = pendingRewardOfBasicToken(_tokenId);

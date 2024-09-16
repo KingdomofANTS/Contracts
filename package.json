@@ -3,9 +3,10 @@
     "@api3/airnode-admin": "^0.10.0",
     "@api3/airnode-protocol": "^0.10.0",
     "@chainlink/contracts": "^0.6.1",
+    "@nomicfoundation/hardhat-chai-matchers": "^1.0.6",
     "@nomicfoundation/hardhat-toolbox": "^2.0.2",
-    "@nomiclabs/hardhat-etherscan": "^3.1.5",
-    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "@nomiclabs/hardhat-etherscan": "^3.1.7",
+    "@nomiclabs/hardhat-waffle": "^2.0.5",
     "@openzeppelin/contracts": "^4.8.0",
     "@openzeppelin/contracts-upgradeable": "^4.8.0",
     "@openzeppelin/hardhat-upgrades": "^1.21.0",
@@ -24,7 +25,7 @@
     "deploy:mainnet": "npx hardhat run scrtips/deploy.js --network mainnet"
   },
   "devDependencies": {
-    "@nomiclabs/hardhat-ethers": "^2.2.1",
+    "@nomiclabs/hardhat-ethers": "^2.2.2",
     "erc721a": "^4.2.3",
     "ethers": "^5.7.2"
   }

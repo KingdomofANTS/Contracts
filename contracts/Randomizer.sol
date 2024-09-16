@@ -88,7 +88,6 @@ contract Randomizer is VRFConsumerBaseV2, ConfirmedOwner, IRandomizer {
         _;
     }
 
-
     /**
      * @notice Constructor
      * @dev RandomNumberGenerator must be deployed before the lottery.
@@ -132,6 +131,8 @@ contract Randomizer is VRFConsumerBaseV2, ConfirmedOwner, IRandomizer {
         requestIds.push(requestId);
         lastRequestId = requestId;
         requestIds.push(requestId);
+        randomResult = uint32(1000000 + (lastRequestId % 1000000));
+        latestLotteryId = IANTLottery(antLottery).viewCurrentLotteryId();
         emit RequestSent(requestId, numWords);
     }
  
@@ -180,19 +181,6 @@ contract Randomizer is VRFConsumerBaseV2, ConfirmedOwner, IRandomizer {
      * @notice Callback function used by ChainLink's VRF Coordinator
      */
 
-    // function fulfillRandomWords(
-    //     uint256 _requestId,
-    //     uint256[] memory _randomWords
-    // ) internal override {
-    //     require(s_requests[_requestId].exists, "request not found");
-    //     require(uint256(lastRequestId) == uint256(_requestId), "Wrong requestId");
-    //     s_requests[_requestId].fulfilled = true;
-    //     s_requests[_requestId].randomWords = _randomWords;
-    //     randomResult = uint32(1000000 + (_randomWords[0] % 1000000));
-    //     // latestLotteryId = IANTLottery(antLottery).viewCurrentLotteryId();
-    //     emit RequestFulfilled(_requestId, _randomWords);
-    // }
-
     function fulfillRandomWords(
         uint256 _requestId,
         uint256[] memory _randomWords
@@ -200,8 +188,6 @@ contract Randomizer is VRFConsumerBaseV2, ConfirmedOwner, IRandomizer {
         require(s_requests[_requestId].exists, "request not found");
         s_requests[_requestId].fulfilled = true;
         s_requests[_requestId].randomWords = _randomWords;
-        randomResult = uint32(1000000 + (_randomWords[0] % 1000000));
-        latestLotteryId = IANTLottery(antLottery).viewCurrentLotteryId();
         emit RequestFulfilled(_requestId, _randomWords);
     }
 

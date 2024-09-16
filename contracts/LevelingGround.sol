@@ -327,7 +327,7 @@ contract LevelingGround is Pausable, Ownable, ReentrancyGuard {
     * @param tokenId    premium ant token id for staking
     */
 
-    function stakePremiumANT(uint256 tokenId) external {
+    function stakePremiumANT(uint256 tokenId) external whenNotPaused nonReentrant {
         IPremiumANT.ANTInfo memory _premiumANTInfo = premiumANT.getANTInfo(tokenId);
         require(premiumANT.ownerOf(tokenId) == _msgSender(), "LevelingGround: you are not owner of this premium token");
         require(antCoin.balanceOf(_msgSender()) >= stakeFeeAmount, "LevelingGround: you don't have enough ant coin balance for stake fee");
@@ -352,7 +352,7 @@ contract LevelingGround is Pausable, Ownable, ReentrancyGuard {
     * @param tokenId    basic ant token id for staking
     */
 
-    function stakeBasicANT(uint256 tokenId) external {
+    function stakeBasicANT(uint256 tokenId) external whenNotPaused nonReentrant {
         IBasicANT.ANTInfo memory _basicANTInfo = basicANT.getANTInfo(tokenId);
         require(basicANT.ownerOf(tokenId) == _msgSender(), "LevelingGround: you are not owner of this basic token");
         require(antCoin.balanceOf(_msgSender()) >= stakeFeeAmount, "LevelingGround: you don't have enough ant coin balance for stake fee");
@@ -377,7 +377,7 @@ contract LevelingGround is Pausable, Ownable, ReentrancyGuard {
     * @param tokenId    premium ant token id for unStaking
     */
 
-    function unStakePremiumANT(uint256 tokenId) external {
+    function unStakePremiumANT(uint256 tokenId) external whenNotPaused nonReentrant {
         StakeANT memory _stakeANTInfo = premiumANTGround[tokenId];
         require(_stakeANTInfo.owner == _msgSender(), 'LevelingGround: you are not owner of this premium ant');
         uint256 rewardPotions = pendingRewardOfPremiumToken(tokenId);
@@ -398,7 +398,7 @@ contract LevelingGround is Pausable, Ownable, ReentrancyGuard {
     * @param tokenId    basic ant token id for unStaking
     */
 
-    function unStakeBasicANT(uint256 tokenId) external {
+    function unStakeBasicANT(uint256 tokenId) external whenNotPaused nonReentrant {
         StakeANT memory _stakeANTInfo = basicANTGround[tokenId];
         require(_stakeANTInfo.owner == _msgSender(), 'LevelingGround: you are not owner of this basic ant');
         uint256 rewardPotions = pendingRewardOfBasicToken(tokenId);
@@ -524,14 +524,6 @@ contract LevelingGround is Pausable, Ownable, ReentrancyGuard {
     }
 
     /**
-    * enables owner to pause / unpause contract
-    */
-    function setPaused(bool _paused) external onlyOwner {
-        if (_paused) _pause();
-        else _unpause();
-    }
-
-    /**
     * @notice           Function to grant mint role
     * @dev              This function can only be called by the owner
     * @param _address   address to get minter role
@@ -547,6 +539,14 @@ contract LevelingGround is Pausable, Ownable, ReentrancyGuard {
     */
     function revokeMinterRole(address _address) external onlyOwner {
         minters[_address] = false;
+    }
+
+    /**
+    * enables owner to pause / unpause contract
+    */
+    function setPaused(bool _paused) external onlyOwner {
+        if (_paused) _pause();
+        else _unpause();
     }
 
     /**

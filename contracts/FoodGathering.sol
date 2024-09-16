@@ -42,12 +42,13 @@ pragma solidity ^0.8.13;
 
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/security/Pausable.sol';
+import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 import '@openzeppelin/contracts/utils/math/SafeMath.sol';
 import './interfaces/IANTCoin.sol';
 import './interfaces/IANTShop.sol';
 
-contract FoodGathering is Ownable, Pausable {
+contract FoodGathering is Ownable, Pausable, ReentrancyGuard {
 
     using SafeMath for uint256;
 
@@ -152,7 +153,7 @@ contract FoodGathering is Ownable, Pausable {
     * @param _antCAmount    ant coin stake amount
     */
 
-    function stake(uint256 _antCAmount) external whenNotPaused {
+    function stake(uint256 _antCAmount) external whenNotPaused nonReentrant {
         StakeInfo storage staked = stakedInfo[_msgSender()];
         uint256 senderBalance = antCoin.balanceOf(_msgSender());
         require(senderBalance >= _antCAmount + stakeFeeAmount, "FoodGathering: you don't have enough ant coin balance for staking");
@@ -175,7 +176,7 @@ contract FoodGathering is Ownable, Pausable {
     * @notice Function to unStake staked tokens for ant food rewards
     */
 
-    function unStake() external whenNotPaused {
+    function unStake() external whenNotPaused nonReentrant {
         StakeInfo storage staked = stakedInfo[_msgSender()];
         uint256 stakedAmount = staked.stakedAmount;
         require(stakedAmount > 0, "FoodGathering: You didn't stake any amount of ant coins");
